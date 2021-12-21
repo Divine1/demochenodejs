@@ -6,6 +6,7 @@ projects:
     source:
       location: 'https://gitlab.eng.vmware.com/dchelladurai/demonodejs.git'
       type: git
+      branch: master
 components:
   - id: vscode/typescript-language-features/latest
     type: chePlugin
