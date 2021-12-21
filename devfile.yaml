@@ -10,8 +10,6 @@ projects:
       type: git
       branch: master
 components:
-  - id: vscode/typescript-language-features/latest
-    type: chePlugin
   - mountSources: true
     endpoints:
       - name: nodejs
