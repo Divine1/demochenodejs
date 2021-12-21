@@ -23,13 +23,13 @@ components:
 commands:
   - name: download dependencies
     actions:
-      - workdir: '${CHE_PROJECTS_ROOT}/demonodejs/app'
+      - workdir: '${CHE_PROJECTS_ROOT}/demonodejs'
         type: exec
         command: npm install
         component: nodejs
   - name: run the web app
     actions:
-      - workdir: '${CHE_PROJECTS_ROOT}/demonodejs/app'
+      - workdir: '${CHE_PROJECTS_ROOT}/demonodejs'
         type: exec
         command: node server.js
         component: nodejs
