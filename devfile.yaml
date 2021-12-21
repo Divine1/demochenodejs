@@ -1,0 +1,32 @@
+apiVersion: 1.0.0
+metadata:
+  name: demonodejs1
+projects:
+  - name: demonodejs
+    source:
+      location: 'https://gitlab.eng.vmware.com/dchelladurai/demonodejs.git'
+      type: git
+components:
+  - id: vscode/typescript-language-features/latest
+    type: chePlugin
+  - mountSources: true
+    endpoints:
+      - name: nodejs
+        port: 3000
+    memoryLimit: 512Mi
+    type: dockerimage
+    alias: nodejs
+    image: 'quay.io/eclipse/che-nodejs10-ubi@sha256:87cb1ba4929c367eac010ab2b65ee04a67b0b0ecd0070b204204a7ed27308953'
+commands:
+  - name: download dependencies
+    actions:
+      - workdir: '${CHE_PROJECTS_ROOT}/demonodejs/app'
+        type: exec
+        command: npm install
+        component: nodejs
+  - name: run the web app
+    actions:
+      - workdir: '${CHE_PROJECTS_ROOT}/demonodejs/app'
+        type: exec
+        command: node server.js
+        component: nodejs
