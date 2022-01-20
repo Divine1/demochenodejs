@@ -1,42 +1,60 @@
-schemaVersion: 2.1.0
+schemaVersion: 2.0.0
 metadata:
+  description: Stack with Angular 12
+  displayName: Angular
+  icon: https://raw.githubusercontent.com/devfile-samples/devfile-stack-icons/main/angular.svg
+  language: typescript
   name: nodejs-angular
-projects:
-  - name: nodejs-angular
+  projectType: angular
+  tags:
+    - NodeJS
+    - Angular
+  version: 1.0.0
+starterProjects:
+  - name: nodejs-angular-starter
     git:
       checkoutFrom:
-        remote: 'https://gitlab.eng.vmware.com/dchelladurai/demonodejs.git'
-        revision: 'master'
-parent:
-  id: nodejs
-  registryUrl: "https://registry.devfile.io"
+        revision: main
+      remotes:
+        origin: https://github.com/devfile-samples/devfile-stack-nodejs-angular.git
 components:
-  - name: outerloop-build
-    image:
-      imageName: nodejs-image:latest
-      dockerfile:
-        uri: Dockerfile
-        buildContext: .
-        rootRequired: false
-  - name: outerloop-deploy
-    kubernetes:
-      uri: outerloop-deploy.yaml
+  - container:
+      image: node:lts-slim
+      memoryLimit: 1024Mi
+      mountSources: true
+      sourceMapping: /project
+      volumeMounts:
+        - name: dist
+          path: /project/dist/nodejs-angular
+    name: builder
+  - container:
+      endpoints:
+        - name: http
+          targetPort: 8080
+      image: nginxinc/nginx-unprivileged:alpine
+      memoryLimit: 1024Mi
+      mountSources: false
+      volumeMounts:
+        - name: dist
+          path: /usr/share/nginx/html
+    name: server
+  - name: dist
+    volume:
+      size: 4Gi
 commands:
   - exec:
-      commandLine: npm install
-      component: nodejs
+      commandLine: yarn install --frozen-lockfile
+      component: builder
       group:
+        isDefault: true
         kind: build
-      label: Install all required dependencies
-      workingDir: '${PROJECTS_ROOT}/demonodejs'
+      workingDir: /project
     id: install
   - exec:
-      commandLine: node server.js
-      component: nodejs
+      commandLine: yarn build && yarn install --production --ignore-scripts --prefer-offline
+      component: builder
       group:
+        isDefault: true
         kind: run
-      label: Start application
-      workingDir: '${PROJECTS_ROOT}/demonodejs'
-    id: start
-    
-  
+      workingDir: /project
+    id: run
