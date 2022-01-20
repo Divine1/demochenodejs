@@ -14,36 +14,23 @@ starterProjects:
   - name: nodejs-angular-starter
     git:
       checkoutFrom:
-        revision: main
+        revision: master
       remotes:
-        origin: https://github.com/devfile-samples/devfile-stack-nodejs-angular.git
+        origin: https://github.com/Divine1/demonodejs.git
 components:
-  - container:
-      image: node:lts-slim
-      memoryLimit: 1024Mi
-      mountSources: true
-      sourceMapping: /project
-      volumeMounts:
-        - name: dist
-          path: /project/dist/nodejs-angular
-    name: builder
-  - container:
-      endpoints:
-        - name: http
-          targetPort: 8080
-      image: nginxinc/nginx-unprivileged:alpine
-      memoryLimit: 1024Mi
-      mountSources: false
-      volumeMounts:
-        - name: dist
-          path: /usr/share/nginx/html
-    name: server
-  - name: dist
-    volume:
-      size: 4Gi
+  - name: outerloop-build
+    image:
+      imageName: nodejs-image:latest
+      dockerfile:
+        uri: Dockerfile
+        buildContext: .
+        rootRequired: false
+  - name: outerloop-deploy
+    kubernetes:
+      uri: outerloop-deploy.yaml
 commands:
   - exec:
-      commandLine: yarn install --frozen-lockfile
+      commandLine: npm install
       component: builder
       group:
         isDefault: true
@@ -51,7 +38,7 @@ commands:
       workingDir: /project
     id: install
   - exec:
-      commandLine: yarn build && yarn install --production --ignore-scripts --prefer-offline
+      commandLine: node server.js
       component: builder
       group:
         isDefault: true
