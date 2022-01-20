@@ -1,0 +1,42 @@
+schemaVersion: 2.1.0
+metadata:
+  name: nodejs-angular
+projects:
+  - name: nodejs-angular
+    git:
+      checkoutFrom:
+        remote: 'https://gitlab.eng.vmware.com/dchelladurai/demonodejs.git'
+        revision: 'master'
+parent:
+  id: nodejs
+  registryUrl: "https://registry.devfile.io"
+components:
+  - name: outerloop-build
+    image:
+      imageName: nodejs-image:latest
+      dockerfile:
+        uri: Dockerfile
+        buildContext: .
+        rootRequired: false
+  - name: outerloop-deploy
+    kubernetes:
+      uri: outerloop-deploy.yaml
+commands:
+  - exec:
+      commandLine: npm install
+      component: nodejs
+      group:
+        kind: build
+      label: Install all required dependencies
+      workingDir: '${PROJECTS_ROOT}/demonodejs'
+    id: install
+  - exec:
+      commandLine: node server.js
+      component: nodejs
+      group:
+        kind: run
+      label: Start application
+      workingDir: '${PROJECTS_ROOT}/demonodejs'
+    id: start
+    
+  
