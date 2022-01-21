@@ -18,16 +18,13 @@ starterProjects:
       remotes:
         origin: https://github.com/Divine1/demonodejs.git
 components:
-  - name: outerloop-build
-    image:
-      imageName: nodejs-image:latest
-      dockerfile:
-        uri: Dockerfile
-        buildContext: .
-        rootRequired: false
-  - name: outerloop-deploy
-    kubernetes:
-      uri: outerloop-deploy.yaml
+  - container:
+      mountSources: true
+      endpoints:
+        - name: nodejs
+          targetPort: 3000
+      memoryLimit: 512Mi
+      image: 'quay.io/eclipse/che-nodejs10-ubi@sha256:87cb1ba4929c367eac010ab2b65ee04a67b0b0ecd0070b204204a7ed27308953'
 commands:
   - exec:
       commandLine: npm install
