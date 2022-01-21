@@ -18,7 +18,8 @@ starterProjects:
       remotes:
         origin: https://github.com/Divine1/demonodejs.git
 components:
-  - container:
+  - name: nodejsc
+    container:
       mountSources: true
       endpoints:
         - name: nodejs
