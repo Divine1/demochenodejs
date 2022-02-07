@@ -1,45 +1,16 @@
 schemaVersion: 2.1.0
 metadata:
-  description: Stack with Angular 12
-  displayName: Angular
-  icon: https://raw.githubusercontent.com/devfile-samples/devfile-stack-icons/main/angular.svg
-  language: typescript
-  name: nodejs-angular
-  projectType: angular
-  tags:
-    - NodeJS
-    - Angular
-  version: 1.0.0
-starterProjects:
-  - name: nodejs-angular-starter
-    git:
-      checkoutFrom:
-        revision: master
-      remotes:
-        origin: https://github.com/Divine1/demonodejs.git
+  name: nodejs-web-app
+projects:
+  - name: demonodejs
+    source:
+      location: 'https://gitlab.eng.vmware.com/dchelladurai/demonodejs.git'
+      type: git
+      branch: master
 components:
-  - attributes:
-      app.kubernetes.io/name: nodejs
-      che-theia.eclipse.org/vscode-extensions:
-        - 'https://open-vsx.org/api/vscode/typescript-language-features/1.49.3/file/vscode.typescript-language-features-1.49.3.vsix'
-        - 'https://open-vsx.org/api/ms-vscode/js-debug/1.52.2/file/ms-vscode.js-debug-1.52.2.vsix'
-    container:
-      args:
-        - sh
-        - '-c'
-        - '${PLUGIN_REMOTE_ENDPOINT_EXECUTABLE}'
-      endpoints:
-        - exposure: public
-          name: angular
-          protocol: http
-          targetPort: 4200
-      env:
-        - name: PLUGIN_REMOTE_ENDPOINT_EXECUTABLE
-          value: /remote-endpoint/plugin-remote-endpoint
-        - name: THEIA_PLUGINS
-          value: 'local-dir:///plugins/sidecars/nodejs'
-      image: 'quay.io/devfile/universal-developer-image:ubi8-latest'
-      memoryLimit: 2G
+  - container:
+      image: 'quay.io/devfile/universal-developer-image:ubi8-b452131'
+      memoryLimit: 1G
       mountSources: true
       sourceMapping: /projects
       volumeMounts:
@@ -51,17 +22,10 @@ components:
 commands:
   - exec:
       commandLine: npm install
-      component: builder
+      component: nodejs
       group:
         isDefault: true
         kind: build
-      workingDir: /project
-    id: install
-  - exec:
-      commandLine: node server.js
-      component: builder
-      group:
-        isDefault: true
-        kind: run
-      workingDir: /project
-    id: run
+      label: Download dependencies
+      workingDir: '${PROJECTS_ROOT}/demonodejs'
+    id: dependencies
