@@ -20,6 +20,12 @@ components:
         - name: plugins
           path: /plugins
     name: nodejs
+  - name: remote-endpoint
+      volume:
+      size: 256Mi
+  - name: plugins
+      volume:
+      size: 256Mi
 commands:
   - exec:
       commandLine: npm install
