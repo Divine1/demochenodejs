@@ -21,10 +21,10 @@ components:
           path: /plugins
     name: nodejs
   - name: remote-endpoint
-      volume:
+    volume:
       size: 256Mi
   - name: plugins
-      volume:
+    volume:
       size: 256Mi
 commands:
   - exec:
