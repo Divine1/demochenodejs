@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mydemonodejs
+spec:
+  containers:
+  - image: divine6/myapp:1.0
+    name: myappcontainer
+    volumeMounts:
+    - mountPath: /app
+      name: myappvol
+  volumes:
+  - name: myappvol
+    hostPath:
+      path: /Users/divine/Documents/upskilling/minikubehostvolume
+      type: Directory
