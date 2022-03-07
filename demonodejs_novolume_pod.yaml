@@ -10,3 +10,11 @@ spec:
     name: myappcontainer
     ports:
     - containerPort: 3000
+    volumeMounts:
+    - mountPath: /app/ntemp
+      name: demonodejsvolume
+  volumes:
+  - name: demonodejsvolume
+    hostPath:
+      path: /Users/divine/Documents/upskilling/minikubehostvolume
+      type: Directory
