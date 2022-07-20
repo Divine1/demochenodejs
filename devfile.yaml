@@ -6,6 +6,7 @@ projects:
     git:
       checkoutFrom:
         revision: master
+        remote: origin
       remotes:
         origin: https://github.com/Divine1/demonodejs.git
 components:
