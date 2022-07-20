@@ -15,14 +15,9 @@ components:
       mountSources: true
       sourceMapping: /projects
       volumeMounts:
-        - name: remote-endpoint
-          path: /remote-endpoint
         - name: plugins
           path: /plugins
     name: nodejs
-  - name: remote-endpoint
-    volume:
-      size: 256Mi
   - name: plugins
     volume:
       size: 256Mi
