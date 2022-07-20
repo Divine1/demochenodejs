@@ -1,6 +1,6 @@
 schemaVersion: 2.1.0
 metadata:
-  name: nodejs-web-app-github
+  name: nodejs-web-app-githubche
 projects:
   - name: demonodejs
     git:
@@ -14,20 +14,4 @@ components:
       memoryLimit: 1G
       mountSources: true
       sourceMapping: /projects
-      volumeMounts:
-        - name: plugins
-          path: /plugins
     name: nodejs
-  - name: plugins
-    volume:
-      size: 256Mi
-commands:
-  - exec:
-      commandLine: npm install
-      component: nodejs
-      group:
-        isDefault: true
-        kind: build
-      label: Download dependencies
-      workingDir: '${PROJECTS_ROOT}/demonodejs'
-    id: dependencies
